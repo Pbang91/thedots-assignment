@@ -1,0 +1,1 @@
+export const TEACHER_QUERY_PORT = Symbol('TEACHER_QUERY_PORT');

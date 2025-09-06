@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'teacher_region_pref' })
-export class TeacherRegioPref {
+export class TeacherRegionPref {
   @PrimaryColumn('uuid', { default: () => 'uuid_generate_v7()' })
   id!: string;
 

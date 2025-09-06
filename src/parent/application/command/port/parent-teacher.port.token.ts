@@ -1,0 +1,1 @@
+export const PARENT_TEACHER_PORT = Symbol('PARENT_TEACHER_PORT');

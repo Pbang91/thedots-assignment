@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GEOCODING_PORT } from 'src/parent/application/command/port/gecording.port.token';
-import { GeocodingPort } from 'src/parent/application/command/port/geocoding.port';
-import { ParentTeacherPort } from 'src/parent/application/command/port/parant-teacher.port';
+import { GEOCODING_PORT } from 'src/parent/application/query/port/gecording.port.token';
+import { GeocodingPort } from 'src/parent/application/query/port/geocoding.port';
+import { ParentTeacherPort } from 'src/parent/application/query/port/parant-teacher.port';
 import {
   RecommendByLocationQuery,
   TeacherContactView,
-} from 'src/parent/application/command/port/parent-teacher.port.type';
+} from 'src/parent/application/query/port/parent-teacher.port.type';
 import { haversineKm } from 'src/shared/utils/geo.util';
 import { TeacherQueryPort } from 'src/teacher/application/query/port/teacher-query.port';
 import { TEACHER_QUERY_PORT } from 'src/teacher/application/query/port/teacher-query.port.token';
@@ -23,7 +23,7 @@ export class ParentTeacherAdapter implements ParentTeacherPort {
     const { lat, lng, address, zipcode } = q;
 
     // 인근 5km 반경(1차 필터 -> 2차 정밀)
-    const nearby = await this.teacherPort.findNearByAddressCandidates({
+    const nearby = await this.teacherPort.findNearbyAddressCandidates({
       lat,
       lng,
       radiusKm: 7,
@@ -41,27 +41,31 @@ export class ParentTeacherAdapter implements ParentTeacherPort {
       zipcode,
     });
 
-    const regions = sidoCode
-      ? await this.teacherPort.findRegionTeachers({
-          level: 'SIDO',
-          sidoCode: sidoCode,
-        })
-      : await this.teacherPort.findRegionTeachers({
-          level: 'SIGUNGU',
-          sigunguCode: sigunguCode,
-        });
+    let regions: { teacherId: string }[] = [];
+
+    if (sigunguCode) {
+      regions = await this.teacherPort.findRegionTeachers({
+        level: 'SIGUNGU',
+        sigunguCode: sigunguCode,
+      });
+    } else if (sidoCode) {
+      await this.teacherPort.findRegionTeachers({
+        level: 'SIDO',
+        sidoCode: sidoCode,
+      });
+    }
 
     const regionTeacherIds = regions.map((r) => r.teacherId);
 
     // 지하철역 1km 반경(1차 필터 -> 2차 정밀)
-    const stations = await this.teacherPort.findStationsWithIn({
+    const stations = await this.teacherPort.findStationsWithin({
       lat,
       lng,
       radiusKm: 1.2,
     });
 
     const teachersAroundStation =
-      await this.teacherPort.findTeachersByStationsIds({
+      await this.teacherPort.findTeachersByStationIds({
         stationIds: stations.map((s) => s.id),
       });
 

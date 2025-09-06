@@ -1,4 +1,4 @@
-export type FindNearByAddressCandidatesQuery = Readonly<{
+export type FindNearbyAddressCandidatesQuery = Readonly<{
   lat: number;
   lng: number;
   radiusKm: number;

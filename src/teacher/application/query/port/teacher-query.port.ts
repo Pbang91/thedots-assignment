@@ -1,5 +1,5 @@
 import {
-  FindNearByAddressCandidatesQuery,
+  FindNearbyAddressCandidatesQuery,
   FindRegionTeachersQuery,
   FindStationsWithinQuery,
   FindTeachersByIdsQuery,
@@ -12,19 +12,19 @@ import {
 } from './teacher-query.port.type';
 
 export interface TeacherQueryPort {
-  findNearByAddressCandidates(
-    q: FindNearByAddressCandidatesQuery,
+  findNearbyAddressCandidates(
+    q: FindNearbyAddressCandidatesQuery,
   ): Promise<NearByAddressPrefRecod[]>;
 
   findRegionTeachers(
     q: FindRegionTeachersQuery,
   ): Promise<RegionTeacherRecord[]>;
 
-  findStationsWithIn(
+  findStationsWithin(
     q: FindStationsWithinQuery,
   ): Promise<StationWithinRecord[]>;
 
-  findTeachersByStationsIds(
+  findTeachersByStationIds(
     q: FindTeachersByStationIdsQuery,
   ): Promise<TeacherStationPrefRcord[]>;
 

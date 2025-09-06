@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ParentTeacherPort } from '../port/parant-teacher.port';
-import { CreateJobPostReqDto } from '../dto/create-job-post.req.dto';
+import { GetTeacherInfoByLocationReqDto } from '../dto/recommended-teacher.req.dto';
 import { RecommendedTeacherResDto } from '../dto/recommended-teacher.res.dto';
 import { PARENT_TEACHER_PORT } from '../port/parent-teacher.port.token';
 
 @Injectable()
-export class CreateJobPostHandler {
+export class RecommendationQueryService {
   constructor(
     @Inject(PARENT_TEACHER_PORT)
     private readonly parentTeacherPort: ParentTeacherPort,
   ) {}
 
   public async execute(
-    dto: CreateJobPostReqDto,
+    dto: GetTeacherInfoByLocationReqDto,
   ): Promise<RecommendedTeacherResDto[]> {
     const teachers = await this.parentTeacherPort.recommend({
       lat: dto.lat,

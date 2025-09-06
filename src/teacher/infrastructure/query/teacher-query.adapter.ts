@@ -4,7 +4,7 @@ import { SubwayStation } from 'src/reference/domain/entities/subway-station.enti
 import { bboxAround } from 'src/shared/utils/geo.util';
 import { TeacherQueryPort } from 'src/teacher/application/query/port/teacher-query.port';
 import {
-  FindNearByAddressCandidatesQuery,
+  FindNearbyAddressCandidatesQuery,
   FindRegionTeachersQuery,
   FindStationsWithinQuery,
   FindTeachersByIdsQuery,
@@ -40,8 +40,8 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
     private readonly subwayRepo: Repository<SubwayStation>,
   ) {}
 
-  public async findNearByAddressCandidates(
-    q: FindNearByAddressCandidatesQuery,
+  public async findNearbyAddressCandidates(
+    q: FindNearbyAddressCandidatesQuery,
   ): Promise<NearByAddressPrefRecod[]> {
     const { lat, lng, radiusKm } = q;
     const { minLat, maxLat, minLng, maxLng } = bboxAround(lat, lng, radiusKm);
@@ -86,7 +86,7 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
    * 반경 내 지하철역(1차 후보)
    * @param q - 위,경도, 1차 반경
    */
-  public async findStationsWithIn(
+  public async findStationsWithin(
     q: FindStationsWithinQuery,
   ): Promise<StationWithinRecord[]> {
     const { lat, lng, radiusKm } = q;
@@ -104,7 +104,7 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
    * 역 Ids를 통해 매핑 데이터 조회
    * @param q - 역 ids
    */
-  public async findTeachersByStationsIds(
+  public async findTeachersByStationIds(
     q: FindTeachersByStationIdsQuery,
   ): Promise<TeacherStationPrefRcord[]> {
     const { stationIds } = q;
@@ -129,7 +129,7 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
     if (!ids.length) return [];
 
     const rows = await this.teacherRepo.find({
-      select: { name: true, phone: true },
+      select: { id: true, name: true, phone: true },
       where: { id: In(ids), isActive: true },
     });
 

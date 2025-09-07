@@ -12,7 +12,10 @@ import {
   TeacherStationPrefRcord,
   FindTeachersByIdsQuery,
   TeacherContactRecord,
+  FindTeacherAlertSettingsQuery,
+  TeacherAlertSettingRecord,
 } from '@app/teacher/application/query/port/teacher-query.port.type';
+import { TeacherAlertSetting } from '@app/teacher/domain/entities/teacher-alert-setting.entity';
 import { TeacherNearbyAddressPref } from '@app/teacher/domain/entities/teacher-nearby-address-pref.entity';
 import { TeacherRegionPref } from '@app/teacher/domain/entities/teacher-region-preff.entity';
 import { TeacherStationPref } from '@app/teacher/domain/entities/teacher-station-pref.entity';
@@ -38,6 +41,9 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
 
     @InjectRepository(SubwayStation)
     private readonly subwayRepo: Repository<SubwayStation>,
+
+    @InjectRepository(TeacherAlertSetting)
+    private readonly alertRepo: Repository<TeacherAlertSetting>,
   ) {}
 
   public async findNearbyAddressCandidates(
@@ -134,5 +140,20 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
     });
 
     return rows.map((r) => ({ id: r.id, name: r.name, phone: r.phone }));
+  }
+
+  public async getAlertSettings(
+    q: FindTeacherAlertSettingsQuery,
+  ): Promise<TeacherAlertSettingRecord[]> {
+    const { teacherIds } = q;
+
+    if (!teacherIds.length) return [];
+
+    const rows = await this.alertRepo.find({
+      select: { teacherId: true, mode: true },
+      where: { teacherId: In(teacherIds), isOn: true },
+    });
+
+    return rows.map((r) => ({ teacherId: r.teacherId, mode: r.mode }));
   }
 }

@@ -9,6 +9,7 @@ import {
 import { haversineKm } from '@app/shared/utils/geo.util';
 import { TeacherQueryPort } from '@app/teacher/application/query/port/teacher-query.port';
 import { TEACHER_QUERY_PORT } from '@app/teacher/application/query/port/teacher-query.port.token';
+import { TEACHER_ALERT_MODE } from '@app/teacher/domain/enums/teacher-alert.type';
 
 @Injectable()
 export class ParentTeacherAdapter implements ParentTeacherPort {
@@ -49,7 +50,7 @@ export class ParentTeacherAdapter implements ParentTeacherPort {
         sigunguCode: sigunguCode,
       });
     } else if (sidoCode) {
-      await this.teacherPort.findRegionTeachers({
+      regions = await this.teacherPort.findRegionTeachers({
         level: 'SIDO',
         sidoCode: sidoCode,
       });
@@ -77,14 +78,35 @@ export class ParentTeacherAdapter implements ParentTeacherPort {
       })
       .map((p) => p.teacherId);
 
-    const uniqueTeacherIds = new Set([
-      ...nearbyTeacherIds,
-      ...regionTeacherIds,
-      ...stationTeacherIds,
+    const candidateIds = Array.from(
+      new Set([...nearbyTeacherIds, ...regionTeacherIds, ...stationTeacherIds]),
+    );
+
+    if (!candidateIds.length) return [];
+
+    // NOTE: 데이터양과 응답시간을 추적하여 추후 query level(join)로 변경 가능
+    const settings = await this.teacherPort.getAlertSettings({
+      teacherIds: candidateIds,
+    });
+
+    const modeMap = new Map((settings ?? []).map((s) => [s.teacherId, s.mode]));
+
+    const uniqueIds = new Set<string>([
+      ...nearbyTeacherIds.filter(
+        (id) => modeMap.get(id) === TEACHER_ALERT_MODE.NEARBY,
+      ),
+      ...regionTeacherIds.filter(
+        (id) => modeMap.get(id) === TEACHER_ALERT_MODE.REGION,
+      ),
+      ...stationTeacherIds.filter(
+        (id) => modeMap.get(id) === TEACHER_ALERT_MODE.STATION,
+      ),
     ]);
 
+    if (!uniqueIds.size) return [];
+
     const contacts = await this.teacherPort.getContactsByIds({
-      ids: Array.from(uniqueTeacherIds),
+      ids: [...uniqueIds],
     });
 
     return contacts.map((c) => ({ name: c.name, phone: c.phone }));

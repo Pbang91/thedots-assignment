@@ -7,6 +7,8 @@ import { FindOperator, In } from 'typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { TeacherQueryAdapter } from './teacher-query.adapter';
 import { bboxAround } from '@app/shared/utils/geo.util';
+import { TeacherAlertSetting } from '@app/teacher/domain/entities/teacher-alert-setting.entity';
+import { TEACHER_ALERT_MODE } from '@app/teacher/domain/enums/teacher-alert.type';
 
 function mockRepo<T>() {
   return {
@@ -22,6 +24,7 @@ describe('TeacherQueryAdapter', () => {
   let regionPrefRepo: jest.Mocked<Repository<TeacherRegionPref>>;
   let stationPrefRepo: jest.Mocked<Repository<TeacherStationPref>>;
   let subwayRepo: jest.Mocked<Repository<SubwayStation>>;
+  let alertRepo: jest.Mocked<Repository<TeacherAlertSetting>>;
 
   beforeEach(() => {
     teacherRepo = mockRepo<Teacher>();
@@ -29,6 +32,7 @@ describe('TeacherQueryAdapter', () => {
     regionPrefRepo = mockRepo<TeacherRegionPref>();
     stationPrefRepo = mockRepo<TeacherStationPref>();
     subwayRepo = mockRepo<SubwayStation>();
+    alertRepo = mockRepo<TeacherAlertSetting>();
 
     adapter = new TeacherQueryAdapter(
       teacherRepo,
@@ -36,6 +40,7 @@ describe('TeacherQueryAdapter', () => {
       regionPrefRepo,
       stationPrefRepo,
       subwayRepo,
+      alertRepo,
     );
   });
 
@@ -146,5 +151,22 @@ describe('TeacherQueryAdapter', () => {
     const res = await adapter.getContactsByIds({ ids: ['t1'] });
     expect(teacherRepo.find).toHaveBeenCalled();
     expect(res).toEqual([{ id: 't1', name: '김째깍', phone: '01012345678' }]);
+  });
+
+  it('getAlertSettings: id가 없으면 []', async () => {
+    const res = await adapter.getAlertSettings({ teacherIds: [] } as any);
+
+    expect(res).toEqual([]);
+  });
+
+  it('getAlertSettings: In 조회', async () => {
+    alertRepo.find.mockResolvedValueOnce([
+      { teacherId: 't1', mode: TEACHER_ALERT_MODE.NEARBY } as any,
+    ]);
+
+    const res = await adapter.getAlertSettings({ teacherIds: ['t1'] } as any);
+
+    expect(alertRepo.find).toHaveBeenCalled();
+    expect(res).toEqual([{ teacherId: 't1', mode: TEACHER_ALERT_MODE.NEARBY }]);
   });
 });

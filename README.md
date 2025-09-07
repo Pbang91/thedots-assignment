@@ -78,6 +78,19 @@ Table job_post {
   detail text
 }
 
+Table teacher_alert_setting {
+  id uuid [pk]
+  teacher_id uuid [ref: > teacher.id, not null, unique]
+  mode text [not null] // enum 'NEARBY', 'REGION', 'STATION'
+  is_on boolean [not null, default: true]
+  created_at timestamp [default: `now()`]
+
+  Indexes {
+    teacher_id
+    mode
+  }
+}
+
 Table teacher_nearby_address_pref {
   id uuid [pk]
   teacher_id uuid [ref: > teacher.id, not null]
@@ -188,6 +201,17 @@ CREATE TABLE job_post (
   job_post_address_id  UUID NOT NULL REFERENCES job_post_address(id),
   detail               TEXT
 );
+
+CREATE TABLE teacher_alert_setting (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v7(),
+  teacher_id UUID NOT NULL REFERENCES teacher(id) ON DELETE CASCADE UNIQUE,
+  mode TEXT NOT NULL,
+  is_on BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at  TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_tas_teacher_id ON teacher_alert_setting(teacher_id);
+CREATE INDEX idx_tas_mode ON teacher_alert_setting(mode);
 
 CREATE TABLE teacher_nearby_address_pref (
   id          UUID PRIMARY KEY DEFAULT uuid_generate_v7(),

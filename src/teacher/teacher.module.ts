@@ -8,6 +8,7 @@ import { TeacherQueryAdapter } from './infrastructure/query/teacher-query.adapte
 import { TEACHER_QUERY_PORT } from './application/query/port/teacher-query.port.token';
 import { ReferenceModule } from 'src/reference/reference.module';
 import { AuthModule } from 'src/shared/auth/auth.module';
+import { TeacherAlertSetting } from './domain/entities/teacher-alert-setting.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from 'src/shared/auth/auth.module';
       TeacherNearbyAddressPref,
       TeacherRegionPref,
       TeacherStationPref,
+      TeacherAlertSetting,
     ]),
     AuthModule,
     ReferenceModule,

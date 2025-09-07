@@ -1,3 +1,5 @@
+import { TeacherAlertMode } from '@app/teacher/domain/enums/teacher-alert.type';
+
 export type FindNearbyAddressCandidatesQuery = Readonly<{
   lat: number;
   lng: number;
@@ -40,4 +42,10 @@ export type TeacherContactRecord = Readonly<{
   id: string;
   name: string;
   phone: string;
+}>;
+
+export type FindTeacherAlertSettingsQuery = Readonly<{ teacherIds: string[] }>;
+export type TeacherAlertSettingRecord = Readonly<{
+  teacherId: string;
+  mode: TeacherAlertMode;
 }>;

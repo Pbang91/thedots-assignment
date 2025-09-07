@@ -1,4 +1,4 @@
-import { NumericToNumber } from 'src/shared/utils/numeric.transformer';
+import { NumericToNumber } from '@app/shared/utils/numeric.transformer';
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'teacher_station_pref' })

@@ -1,4 +1,4 @@
-# 선생님 공고 추천
+# 주소 기반 선생님 추천
 ## 요구사항 정리
 1. 공고 추천 서비스는 선생님과 부모님을 연결한다.
 2. 부모님은 "특정 지역"(위치 기반)에 선생님 모집 공고를 등록할 수 있다.
@@ -156,6 +156,7 @@ Table teacher_station_pref {
   // check(radius_km > 0)
 }
 ```
+
 ## SQL(PostgresSQL 16 기준)
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_uuidv7;
@@ -251,3 +252,6 @@ CREATE TABLE teacher_station_pref (
 CREATE INDEX idx_tsp_teacher_id ON teacher_station_pref(teacher_id);
 CREATE INDEX idx_tsp_subway_station_id ON teacher_station_pref(subway_station_id);
 ```
+
+## Sequence Diagram
+![alt text](md_assets/image3.png)

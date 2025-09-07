@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GEOCODING_PORT } from 'src/parent/application/query/port/gecording.port.token';
-import { GeocodingPort } from 'src/parent/application/query/port/geocoding.port';
-import { ParentTeacherPort } from 'src/parent/application/query/port/parant-teacher.port';
+import { GEOCODING_PORT } from '@app/parent/application/query/port/gecording.port.token';
+import { GeocodingPort } from '@app/parent/application/query/port/geocoding.port';
+import { ParentTeacherPort } from '@app/parent/application/query/port/parant-teacher.port';
 import {
   RecommendByLocationQuery,
   TeacherContactView,
-} from 'src/parent/application/query/port/parent-teacher.port.type';
-import { haversineKm } from 'src/shared/utils/geo.util';
-import { TeacherQueryPort } from 'src/teacher/application/query/port/teacher-query.port';
-import { TEACHER_QUERY_PORT } from 'src/teacher/application/query/port/teacher-query.port.token';
+} from '@app/parent/application/query/port/parent-teacher.port.type';
+import { haversineKm } from '@app/shared/utils/geo.util';
+import { TeacherQueryPort } from '@app/teacher/application/query/port/teacher-query.port';
+import { TEACHER_QUERY_PORT } from '@app/teacher/application/query/port/teacher-query.port.token';
 
 @Injectable()
 export class ParentTeacherAdapter implements ParentTeacherPort {

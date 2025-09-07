@@ -1,25 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { SubwayStation } from 'src/reference/domain/entities/subway-station.entity';
-import { bboxAround } from 'src/shared/utils/geo.util';
-import { TeacherQueryPort } from 'src/teacher/application/query/port/teacher-query.port';
+import { SubwayStation } from '@app/reference/domain/entities/subway-station.entity';
+import { bboxAround } from '@app/shared/utils/geo.util';
+import { TeacherQueryPort } from '@app/teacher/application/query/port/teacher-query.port';
 import {
   FindNearbyAddressCandidatesQuery,
-  FindRegionTeachersQuery,
-  FindStationsWithinQuery,
-  FindTeachersByIdsQuery,
-  FindTeachersByStationIdsQuery,
   NearByAddressPrefRecod,
+  FindRegionTeachersQuery,
   RegionTeacherRecord,
+  FindStationsWithinQuery,
   StationWithinRecord,
-  TeacherContactRecord,
+  FindTeachersByStationIdsQuery,
   TeacherStationPrefRcord,
-} from 'src/teacher/application/query/port/teacher-query.port.type';
-import { TeacherNearbyAddressPref } from 'src/teacher/domain/entities/teacher-nearby-address-pref.entity';
-import { TeacherRegionPref } from 'src/teacher/domain/entities/teacher-region-preff.entity';
-import { TeacherStationPref } from 'src/teacher/domain/entities/teacher-station-pref.entity';
-import { Teacher } from 'src/teacher/domain/entities/teacher.entity';
-import { Between, FindOptionsWhere, In, Repository } from 'typeorm';
+  FindTeachersByIdsQuery,
+  TeacherContactRecord,
+} from '@app/teacher/application/query/port/teacher-query.port.type';
+import { TeacherNearbyAddressPref } from '@app/teacher/domain/entities/teacher-nearby-address-pref.entity';
+import { TeacherRegionPref } from '@app/teacher/domain/entities/teacher-region-preff.entity';
+import { TeacherStationPref } from '@app/teacher/domain/entities/teacher-station-pref.entity';
+import { Teacher } from '@app/teacher/domain/entities/teacher.entity';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, Between, FindOptionsWhere, In } from 'typeorm';
 
 @Injectable()
 export class TeacherQueryAdapter implements TeacherQueryPort {

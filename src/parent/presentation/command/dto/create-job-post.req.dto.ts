@@ -1,5 +1,12 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional, IsString, Matches, IsNumber, Min, Max } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsOptional,
+  IsString,
+  Matches,
+  IsNumber,
+  Min,
+  Max,
+} from 'class-validator';
 
 export class CreateJobPostReqDto {
   @ApiProperty({
@@ -17,9 +24,9 @@ export class CreateJobPostReqDto {
     description: '공고 상세 주소',
     required: true,
     type: String,
-    example: '서울시 강남구 테헤란로 123'
+    example: '서울시 강남구 테헤란로 123',
   })
-  @IsString({message: '상세 주소는 필수입니다'})
+  @IsString({ message: '상세 주소는 필수입니다' })
   addrDetail!: string;
 
   @ApiProperty({
@@ -28,7 +35,7 @@ export class CreateJobPostReqDto {
     type: String,
     example: '강남구',
   })
-  @IsString({message: '시군구는 필수 입니다'})
+  @IsString({ message: '시군구는 필수 입니다' })
   sigungu!: string;
 
   @ApiProperty({
@@ -37,7 +44,7 @@ export class CreateJobPostReqDto {
     type: String,
     example: '서울특별시',
   })
-  @IsString({message: '시도는 필수 입니다'})
+  @IsString({ message: '시도는 필수 입니다' })
   sido!: string;
 
   @ApiProperty({

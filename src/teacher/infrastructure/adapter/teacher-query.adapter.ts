@@ -23,7 +23,6 @@ import { TeacherNearbyAddressPref } from '@app/teacher/domain/entities/teacher-n
 import { TeacherRegionPref } from '@app/teacher/domain/entities/teacher-region-preff.entity';
 import { TeacherStationPref } from '@app/teacher/domain/entities/teacher-station-pref.entity';
 import { Teacher } from '@app/teacher/domain/entities/teacher.entity';
-import { TeacherDeviceTokenPlatform } from '@app/teacher/domain/enums/teacher-device-token.type';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, FindOptionsWhere, In } from 'typeorm';
@@ -164,14 +163,20 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
     return rows.map((r) => ({ teacherId: r.teacherId, mode: r.mode }));
   }
 
-  public async getActiveDeviceTokens(q: FindTeacherDeviceTokensQuery): Promise<TeacherDeviceTokenRecord[]> {
+  public async getActiveDeviceTokens(
+    q: FindTeacherDeviceTokensQuery,
+  ): Promise<TeacherDeviceTokenRecord[]> {
     const { teacherIds } = q;
-    
+
     const rows = await this.deviceTokenRepo.find({
-      select: {teacherId: true,token: true, platform: true},
-      where: {teacherId: In(teacherIds), isActive: true}
+      select: { teacherId: true, token: true, platform: true },
+      where: { teacherId: In(teacherIds), isActive: true },
     });
 
-    return rows.map(r => ({teacherId: r.teacherId, token: r.token, platform: r.platform}));
+    return rows.map((r) => ({
+      teacherId: r.teacherId,
+      token: r.token,
+      platform: r.platform,
+    }));
   }
 }

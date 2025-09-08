@@ -1,4 +1,4 @@
-import { UserRole } from "./roles.decorator";
+import { UserRole } from './roles.decorator';
 
 export interface JwtPayload {
   id?: string;

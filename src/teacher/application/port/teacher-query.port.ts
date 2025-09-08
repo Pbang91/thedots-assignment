@@ -38,5 +38,7 @@ export interface TeacherQueryPort {
     q: FindTeacherAlertSettingsQuery,
   ): Promise<TeacherAlertSettingRecord[]>;
 
-  getActiveDeviceTokens(q: FindTeacherDeviceTokensQuery): Promise<TeacherDeviceTokenRecord[]>;
+  getActiveDeviceTokens(
+    q: FindTeacherDeviceTokensQuery,
+  ): Promise<TeacherDeviceTokenRecord[]>;
 }

@@ -1,6 +1,6 @@
-import { TeacherQueryPort } from "@app/teacher/application/port/teacher-query.port";
-import { FcmPushAdapter } from "./push.fcm.adapter";
-import { TEACHER_DEVICE_TOKEN_PLATFORM } from "@app/teacher/domain/enums/teacher-device-token.type";
+import { TeacherQueryPort } from '@app/teacher/application/port/teacher-query.port';
+import { FcmPushAdapter } from './push.fcm.adapter';
+import { TEACHER_DEVICE_TOKEN_PLATFORM } from '@app/teacher/domain/enums/teacher-device-token.type';
 
 describe('FcmPushAdapter', () => {
   let adapter: FcmPushAdapter;
@@ -24,14 +24,14 @@ describe('FcmPushAdapter', () => {
       {
         teacherId: 't2',
         token: 'isToken2',
-        platform: TEACHER_DEVICE_TOKEN_PLATFORM.IOS
-      }
+        platform: TEACHER_DEVICE_TOKEN_PLATFORM.IOS,
+      },
     ]);
 
     await adapter.sendJobPostCreated(['t1', 't2'], {
       title: '공고 보세요',
       body: '공고에요',
-      data: {postId: 'post1'},
+      data: { postId: 'post1' },
     });
 
     expect(teacherPort.getActiveDeviceTokens).toHaveBeenCalledTimes(1);

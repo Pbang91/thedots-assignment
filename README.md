@@ -56,6 +56,14 @@ teacher_station_pref
 
 - 지하철역 매칭
 
+teacher_alert_setting
+
+- 선생님 알림 설정
+
+teacher_device_token
+
+- 선생님 디바이스 및 플랫폼별 토큰 정보
+
 ### 개념 모델링
 
 ![Alt text](md_assets/image.png)

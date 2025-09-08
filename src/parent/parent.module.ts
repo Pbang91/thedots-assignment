@@ -16,7 +16,6 @@ import { JobPostCommandController } from './presentation/command/job-post-comman
 import { PUSH_PORT } from './application/port/push.port.token';
 import { FcmPushAdapter } from './infrastructure/adpter/push.fcm.adapter';
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([Parent, JobPost, JobPostAddress]),
@@ -30,7 +29,7 @@ import { FcmPushAdapter } from './infrastructure/adpter/push.fcm.adapter';
     { provide: GEOCODING_PORT, useValue: { reverse: async () => ({}) } },
     RecommendationQueryService,
     JobPostCommandService,
-    {provide: PUSH_PORT, useClass: FcmPushAdapter},
+    { provide: PUSH_PORT, useClass: FcmPushAdapter },
   ],
   exports: [TypeOrmModule],
 })

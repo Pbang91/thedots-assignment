@@ -1,38 +1,33 @@
-import { JobPostAddress } from "@app/parent/domain/entities/job-post-address.entity";
-import { JobPost } from "@app/parent/domain/entities/job-post.entity";
-import { Repository } from "typeorm";
-import { ParentTeacherPort } from "../../port/parant-teacher.port";
-import { PushPort } from "../../port/push.port";
-import { JobPostCommandService } from "./job-post-command.service";
-import { CreateJobPostResDto } from "@app/parent/presentation/command/dto/create-job-post.res.dto";
+import { JobPostAddress } from '@app/parent/domain/entities/job-post-address.entity';
+import { JobPost } from '@app/parent/domain/entities/job-post.entity';
+import { Repository } from 'typeorm';
+import { ParentTeacherPort } from '../../port/parant-teacher.port';
+import { PushPort } from '../../port/push.port';
+import { JobPostCommandService } from './job-post-command.service';
+import { CreateJobPostResDto } from '@app/parent/presentation/command/dto/create-job-post.res.dto';
 
 function mockRepo<T>() {
   return { save: jest.fn() } as unknown as jest.Mocked<Repository<T>>;
 }
 
 describe('JobPostCommandService', () => {
-  let matcher: jest.Mocked<ParentTeacherPort> = {
-    recommendTeacherByLocation: jest.fn()
+  const matcher: jest.Mocked<ParentTeacherPort> = {
+    recommendTeacherByLocation: jest.fn(),
   };
-  let pushPort: jest.Mocked<PushPort> = {
-    sendJobPostCreated: jest.fn()
+  const pushPort: jest.Mocked<PushPort> = {
+    sendJobPostCreated: jest.fn(),
   };
-  
+
   let postRepo: jest.Mocked<Repository<JobPost>>;
   let addrRepo: jest.Mocked<Repository<JobPostAddress>>;
   let service: JobPostCommandService;
 
   beforeEach(() => {
     jest.resetAllMocks();
-    
+
     postRepo = mockRepo<JobPost>();
     addrRepo = mockRepo<JobPostAddress>();
-    service = new JobPostCommandService(
-      postRepo,
-      addrRepo,
-      matcher,
-      pushPort,
-    );
+    service = new JobPostCommandService(postRepo, addrRepo, matcher, pushPort);
 
     pushPort.sendJobPostCreated.mockResolvedValue(undefined);
   });
@@ -73,14 +68,11 @@ describe('JobPostCommandService', () => {
 
     // 푸시 호출 파라미터 확인
     expect(pushPort.sendJobPostCreated).toHaveBeenCalledTimes(1);
-    expect(pushPort.sendJobPostCreated).toHaveBeenCalledWith(
-      ['t1', 't2'],
-      {
-        title: '새 공고가 등록되었습니다',
-        body: '서울특별시 강남구 근처 공고를 확인해보세요',
-        data: { postId: 'post1' },
-      },
-    );
+    expect(pushPort.sendJobPostCreated).toHaveBeenCalledWith(['t1', 't2'], {
+      title: '새 공고가 등록되었습니다',
+      body: '서울특별시 강남구 근처 공고를 확인해보세요',
+      data: { postId: 'post1' },
+    });
 
     // 응답 확인
     expect(out).toEqual(new CreateJobPostResDto('post1'));

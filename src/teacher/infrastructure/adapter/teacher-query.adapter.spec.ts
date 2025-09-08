@@ -44,7 +44,7 @@ describe('TeacherQueryAdapter', () => {
       stationPrefRepo,
       subwayRepo,
       alertRepo,
-      deviceTokenRepo
+      deviceTokenRepo,
     );
   });
 

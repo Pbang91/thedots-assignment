@@ -41,7 +41,7 @@ export class RecommendationQueryController {
   @ApiOkResponse({
     description: '성공',
     type: RecommendedTeacherResDto,
-    isArray: true
+    isArray: true,
   })
   async getTeacherInfoByLocation(
     @Query() dto: GetTeacherInfoByLocationReqDto,

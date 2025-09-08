@@ -14,8 +14,12 @@ export class JobPost {
   @Column('text', { nullable: true })
   detail?: string;
 
-  static create(data: {parentId: string, jobPostAddressId: string, detail?: string}): JobPost {
-    const {parentId, jobPostAddressId, detail} = data;
+  static create(data: {
+    parentId: string;
+    jobPostAddressId: string;
+    detail?: string;
+  }): JobPost {
+    const { parentId, jobPostAddressId, detail } = data;
 
     const jp = new JobPost();
 

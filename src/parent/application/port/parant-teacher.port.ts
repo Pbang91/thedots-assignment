@@ -4,5 +4,7 @@ import {
 } from './parent-teacher.port.type';
 
 export interface ParentTeacherPort {
-  recommendTeacherByLocation(q: RecommendByLocationQuery): Promise<TeacherContactView[]>;
+  recommendTeacherByLocation(
+    q: RecommendByLocationQuery,
+  ): Promise<TeacherContactView[]>;
 }

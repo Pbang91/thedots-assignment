@@ -51,9 +51,9 @@ export type TeacherAlertSettingRecord = Readonly<{
   mode: TeacherAlertMode;
 }>;
 
-export type FindTeacherDeviceTokensQuery = Readonly<{teacherIds: string[]}>;
+export type FindTeacherDeviceTokensQuery = Readonly<{ teacherIds: string[] }>;
 export type TeacherDeviceTokenRecord = Readonly<{
   teacherId: string;
   token: string;
-  platform: TeacherDeviceTokenPlatform
+  platform: TeacherDeviceTokenPlatform;
 }>;

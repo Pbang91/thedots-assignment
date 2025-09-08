@@ -17,11 +17,16 @@ export class JobPostAddress {
   @Column('text', { name: 'zipcode', nullable: false })
   zipcode!: string;
 
-  static create(data: {addrDetail: string, sigungu: string, sido: string; zipcode: string}): JobPostAddress {
-    const {addrDetail, sigungu, sido, zipcode} = data;
+  static create(data: {
+    addrDetail: string;
+    sigungu: string;
+    sido: string;
+    zipcode: string;
+  }): JobPostAddress {
+    const { addrDetail, sigungu, sido, zipcode } = data;
 
     const jpAddr = new JobPostAddress();
-    
+
     jpAddr.addrDetail = addrDetail.trim();
     jpAddr.sigungu = sigungu.trim();
     jpAddr.sido = sido.trim();

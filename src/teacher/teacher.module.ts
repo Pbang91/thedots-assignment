@@ -19,7 +19,7 @@ import { TeacherDeviceToken } from './domain/entities/teacher-device-token.entit
       TeacherRegionPref,
       TeacherStationPref,
       TeacherAlertSetting,
-      TeacherDeviceToken
+      TeacherDeviceToken,
     ]),
     AuthModule,
     ReferenceModule,

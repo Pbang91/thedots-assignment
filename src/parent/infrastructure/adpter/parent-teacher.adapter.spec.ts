@@ -1,7 +1,8 @@
-import { GeocodingPort } from '@app/parent/application/query/port/geocoding.port';
-import { TeacherQueryPort } from '@app/teacher/application/query/port/teacher-query.port';
-import { ParentTeacherAdapter } from './parent-teacher.adapter';
-import { TEACHER_ALERT_MODE } from '@app/teacher/domain/enums/teacher-alert.type';
+import { GeocodingPort } from "@app/parent/application/query/port/geocoding.port";
+import { TeacherQueryPort } from "@app/teacher/application/query/port/teacher-query.port";
+import { ParentTeacherAdapter } from "./parent-teacher.adapter";
+import { TEACHER_ALERT_MODE } from "@app/teacher/domain/enums/teacher-alert.type";
+
 
 describe('ParentTeacherAdapter', () => {
   const teacherPort: jest.Mocked<TeacherQueryPort> = {
@@ -20,10 +21,8 @@ describe('ParentTeacherAdapter', () => {
   let adapter: ParentTeacherAdapter;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
     adapter = new ParentTeacherAdapter(teacherPort, geocoding);
-
-    teacherPort.getAlertSettings.mockResolvedValue([]);
   });
 
   it('매칭이 전혀 없으면 []', async () => {
@@ -61,7 +60,7 @@ describe('ParentTeacherAdapter', () => {
       { teacherId: 't4', stationId: 's1', radiusKm: 1 },
     ]);
 
-    teacherPort.getAlertSettings.mockResolvedValueOnce([
+    teacherPort.getAlertSettings.mockResolvedValue([
       { teacherId: 't1', mode: TEACHER_ALERT_MODE.NEARBY }, // 인근만 허용
       { teacherId: 't2', mode: TEACHER_ALERT_MODE.NEARBY }, // 멀어서 어차피 후보에서 제외
       { teacherId: 't3', mode: TEACHER_ALERT_MODE.REGION }, // 지역만 허용
@@ -75,6 +74,7 @@ describe('ParentTeacherAdapter', () => {
     ]);
 
     const res = await adapter.recommend({ lat: 37.5, lng: 127.0 });
+
 
     // 후보로 잡힌 모든 id에 대해 알림 모드를 조회했는지 확인
     const calledIds = (teacherPort.getAlertSettings as jest.Mock).mock

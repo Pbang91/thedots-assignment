@@ -5,10 +5,11 @@ import { TeacherNearbyAddressPref } from './domain/entities/teacher-nearby-addre
 import { TeacherRegionPref } from './domain/entities/teacher-region-preff.entity';
 import { TeacherStationPref } from './domain/entities/teacher-station-pref.entity';
 import { TeacherQueryAdapter } from './infrastructure/adapter/teacher-query.adapter';
-import { TEACHER_QUERY_PORT } from './application/query/port/teacher-query.port.token';
+import { TEACHER_QUERY_PORT } from './application/port/teacher-query.port.token';
 import { ReferenceModule } from 'src/reference/reference.module';
 import { AuthModule } from 'src/shared/auth/auth.module';
 import { TeacherAlertSetting } from './domain/entities/teacher-alert-setting.entity';
+import { TeacherDeviceToken } from './domain/entities/teacher-device-token.entity';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TeacherAlertSetting } from './domain/entities/teacher-alert-setting.ent
       TeacherRegionPref,
       TeacherStationPref,
       TeacherAlertSetting,
+      TeacherDeviceToken
     ]),
     AuthModule,
     ReferenceModule,

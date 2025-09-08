@@ -50,6 +50,7 @@ export class GetTeacherInfoByLocationReqDto {
     type: String,
     example: '03152',
   })
+  @IsString()
   @Matches(/^\d{5}$/)
   zipcode!: string;
 

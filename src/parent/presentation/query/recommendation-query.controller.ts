@@ -17,7 +17,7 @@ import {
 @Controller('recommendation')
 @ApiTags('RecommendationQuery')
 export class RecommendationQueryController {
-  constructor(private readonly handler: RecommendationQueryService) {}
+  constructor(private readonly service: RecommendationQueryService) {}
 
   @Get()
   @Roles(ROLES.PARENT)
@@ -41,11 +41,11 @@ export class RecommendationQueryController {
   @ApiOkResponse({
     description: '성공',
     type: RecommendedTeacherResDto,
-    isArray: true,
+    isArray: true
   })
   async getTeacherInfoByLocation(
     @Query() dto: GetTeacherInfoByLocationReqDto,
   ): Promise<RecommendedTeacherResDto[]> {
-    return await this.handler.execute(dto);
+    return await this.service.recommendTeacher(dto);
   }
 }

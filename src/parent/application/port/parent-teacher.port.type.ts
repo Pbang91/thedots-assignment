@@ -6,6 +6,7 @@ export type RecommendByLocationQuery = {
 };
 
 export type TeacherContactView = {
+  id: string;
   name: string;
   phone: string;
 };

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { ormConfig } from './shared/config/orm.config';
+import { ormConfig } from './shared/database/orm.config';
 import { TeacherMoodule } from './teacher/teacher.module';
 import { ReferenceModule } from './reference/reference.module';
 import { ParentModule } from './parent/parent.module';

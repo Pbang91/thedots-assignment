@@ -9,6 +9,7 @@ import { TeacherQueryAdapter } from './teacher-query.adapter';
 import { bboxAround } from '@app/shared/utils/geo.util';
 import { TeacherAlertSetting } from '@app/teacher/domain/entities/teacher-alert-setting.entity';
 import { TEACHER_ALERT_MODE } from '@app/teacher/domain/enums/teacher-alert.type';
+import { TeacherDeviceToken } from '@app/teacher/domain/entities/teacher-device-token.entity';
 
 function mockRepo<T>() {
   return {
@@ -25,6 +26,7 @@ describe('TeacherQueryAdapter', () => {
   let stationPrefRepo: jest.Mocked<Repository<TeacherStationPref>>;
   let subwayRepo: jest.Mocked<Repository<SubwayStation>>;
   let alertRepo: jest.Mocked<Repository<TeacherAlertSetting>>;
+  let deviceTokenRepo: jest.Mocked<Repository<TeacherDeviceToken>>;
 
   beforeEach(() => {
     teacherRepo = mockRepo<Teacher>();
@@ -33,6 +35,7 @@ describe('TeacherQueryAdapter', () => {
     stationPrefRepo = mockRepo<TeacherStationPref>();
     subwayRepo = mockRepo<SubwayStation>();
     alertRepo = mockRepo<TeacherAlertSetting>();
+    deviceTokenRepo = mockRepo<TeacherDeviceToken>();
 
     adapter = new TeacherQueryAdapter(
       teacherRepo,
@@ -41,6 +44,7 @@ describe('TeacherQueryAdapter', () => {
       stationPrefRepo,
       subwayRepo,
       alertRepo,
+      deviceTokenRepo
     );
   });
 

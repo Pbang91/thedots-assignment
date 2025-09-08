@@ -1,16 +1,21 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Parent } from './domain/entities/parent.entity';
-import { JobPostAddress } from './domain/entities/job-post-address.entity';
-import { JobPost } from './domain/entities/job-post.entity';
-import { RecommendationQueryController } from './presentation/query/recommendation-query.controller';
-import { RecommendationQueryService } from './application/query/service/recommendation-query.service';
-import { ParentTeacherAdapter } from './infrastructure/query/adpter/parent-teacher.adapter';
-import { TeacherMoodule } from 'src/teacher/teacher.module';
-import { ReferenceModule } from 'src/reference/reference.module';
-import { GEOCODING_PORT } from './application/query/port/gecording.port.token';
-import { PARENT_TEACHER_PORT } from './application/query/port/parent-teacher.port.token';
-import { AuthModule } from 'src/shared/auth/auth.module';
+import { Parent } from '@app/parent/domain/entities/parent.entity';
+import { JobPost } from '@app/parent/domain/entities/job-post.entity';
+import { ReferenceModule } from '@app/reference/reference.module';
+import { AuthModule } from '@app/shared/auth/auth.module';
+import { TeacherMoodule } from '@app/teacher/teacher.module';
+import { GEOCODING_PORT } from '@app/parent/application/port/gecording.port.token';
+import { PARENT_TEACHER_PORT } from '@app/parent/application/port/parent-teacher.port.token';
+import { RecommendationQueryService } from '@app/parent/application/query/service/recommendation-query.service';
+import { JobPostAddress } from '@app/parent/domain/entities/job-post-address.entity';
+import { ParentTeacherAdapter } from '@app/parent/infrastructure/adpter/parent-teacher.adapter';
+import { RecommendationQueryController } from '@app/parent/presentation/query/recommendation-query.controller';
+import { JobPostCommandService } from './application/command/service/job-post-command.service';
+import { JobPostCommandController } from './presentation/command/job-post-command.controller';
+import { PUSH_PORT } from './application/port/push.port.token';
+import { FcmPushAdapter } from './infrastructure/adpter/push.fcm.adapter';
+
 
 @Module({
   imports: [
@@ -19,11 +24,13 @@ import { AuthModule } from 'src/shared/auth/auth.module';
     ReferenceModule,
     AuthModule,
   ],
-  controllers: [RecommendationQueryController],
+  controllers: [RecommendationQueryController, JobPostCommandController],
   providers: [
     { provide: PARENT_TEACHER_PORT, useClass: ParentTeacherAdapter },
     { provide: GEOCODING_PORT, useValue: { reverse: async () => ({}) } },
     RecommendationQueryService,
+    JobPostCommandService,
+    {provide: PUSH_PORT, useClass: FcmPushAdapter},
   ],
   exports: [TypeOrmModule],
 })

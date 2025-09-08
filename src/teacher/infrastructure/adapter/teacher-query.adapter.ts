@@ -1,6 +1,6 @@
 import { SubwayStation } from '@app/reference/domain/entities/subway-station.entity';
 import { bboxAround } from '@app/shared/utils/geo.util';
-import { TeacherQueryPort } from '@app/teacher/application/query/port/teacher-query.port';
+import { TeacherQueryPort } from '@app/teacher/application/port/teacher-query.port';
 import {
   FindNearbyAddressCandidatesQuery,
   NearByAddressPrefRecod,
@@ -14,12 +14,16 @@ import {
   TeacherContactRecord,
   FindTeacherAlertSettingsQuery,
   TeacherAlertSettingRecord,
-} from '@app/teacher/application/query/port/teacher-query.port.type';
+  FindTeacherDeviceTokensQuery,
+  TeacherDeviceTokenRecord,
+} from '@app/teacher/application/port/teacher-query.port.type';
 import { TeacherAlertSetting } from '@app/teacher/domain/entities/teacher-alert-setting.entity';
+import { TeacherDeviceToken } from '@app/teacher/domain/entities/teacher-device-token.entity';
 import { TeacherNearbyAddressPref } from '@app/teacher/domain/entities/teacher-nearby-address-pref.entity';
 import { TeacherRegionPref } from '@app/teacher/domain/entities/teacher-region-preff.entity';
 import { TeacherStationPref } from '@app/teacher/domain/entities/teacher-station-pref.entity';
 import { Teacher } from '@app/teacher/domain/entities/teacher.entity';
+import { TeacherDeviceTokenPlatform } from '@app/teacher/domain/enums/teacher-device-token.type';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, FindOptionsWhere, In } from 'typeorm';
@@ -44,6 +48,9 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
 
     @InjectRepository(TeacherAlertSetting)
     private readonly alertRepo: Repository<TeacherAlertSetting>,
+
+    @InjectRepository(TeacherDeviceToken)
+    private readonly deviceTokenRepo: Repository<TeacherDeviceToken>,
   ) {}
 
   public async findNearbyAddressCandidates(
@@ -155,5 +162,16 @@ export class TeacherQueryAdapter implements TeacherQueryPort {
     });
 
     return rows.map((r) => ({ teacherId: r.teacherId, mode: r.mode }));
+  }
+
+  public async getActiveDeviceTokens(q: FindTeacherDeviceTokensQuery): Promise<TeacherDeviceTokenRecord[]> {
+    const { teacherIds } = q;
+    
+    const rows = await this.deviceTokenRepo.find({
+      select: {teacherId: true,token: true, platform: true},
+      where: {teacherId: In(teacherIds), isActive: true}
+    });
+
+    return rows.map(r => ({teacherId: r.teacherId, token: r.token, platform: r.platform}));
   }
 }

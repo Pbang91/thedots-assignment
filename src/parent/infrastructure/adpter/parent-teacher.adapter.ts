@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GEOCODING_PORT } from '@app/parent/application/query/port/gecording.port.token';
-import { GeocodingPort } from '@app/parent/application/query/port/geocoding.port';
-import { ParentTeacherPort } from '@app/parent/application/query/port/parant-teacher.port';
+import { GEOCODING_PORT } from '@app/parent/application/port/gecording.port.token';
+import { GeocodingPort } from '@app/parent/application/port/geocoding.port';
+import { ParentTeacherPort } from '@app/parent/application/port/parant-teacher.port';
 import {
   RecommendByLocationQuery,
   TeacherContactView,
-} from '@app/parent/application/query/port/parent-teacher.port.type';
+} from '@app/parent/application/port/parent-teacher.port.type';
 import { haversineKm } from '@app/shared/utils/geo.util';
-import { TeacherQueryPort } from '@app/teacher/application/query/port/teacher-query.port';
-import { TEACHER_QUERY_PORT } from '@app/teacher/application/query/port/teacher-query.port.token';
+import { TeacherQueryPort } from '@app/teacher/application/port/teacher-query.port';
+import { TEACHER_QUERY_PORT } from '@app/teacher/application/port/teacher-query.port.token';
 import { TEACHER_ALERT_MODE } from '@app/teacher/domain/enums/teacher-alert.type';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class ParentTeacherAdapter implements ParentTeacherPort {
     @Inject(GEOCODING_PORT) private readonly geocoding: GeocodingPort,
   ) {}
 
-  public async recommend(
+  public async recommendTeacherByLocation(
     q: RecommendByLocationQuery,
   ): Promise<TeacherContactView[]> {
     const { lat, lng, address, zipcode } = q;
@@ -110,6 +110,6 @@ export class ParentTeacherAdapter implements ParentTeacherPort {
       ids: [...uniqueIds],
     });
 
-    return contacts.map((c) => ({ name: c.name, phone: c.phone }));
+    return contacts.map((c) => ({ id: c.id, name: c.name, phone: c.phone }));
   }
 }

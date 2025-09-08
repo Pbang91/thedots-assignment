@@ -1,5 +1,5 @@
-import { GeocodingPort } from "@app/parent/application/query/port/geocoding.port";
-import { TeacherQueryPort } from "@app/teacher/application/query/port/teacher-query.port";
+import { GeocodingPort } from "@app/parent/application/port/geocoding.port";
+import { TeacherQueryPort } from "@app/teacher/application/port/teacher-query.port";
 import { ParentTeacherAdapter } from "./parent-teacher.adapter";
 import { TEACHER_ALERT_MODE } from "@app/teacher/domain/enums/teacher-alert.type";
 
@@ -32,7 +32,7 @@ describe('ParentTeacherAdapter', () => {
     teacherPort.findTeachersByStationIds.mockResolvedValueOnce([]);
     teacherPort.getContactsByIds.mockResolvedValueOnce([]);
 
-    const out = await adapter.recommend({ lat: 37.5, lng: 127.0 });
+    const out = await adapter.recommendTeacherByLocation({ lat: 37.5, lng: 127.0 });
     expect(out).toEqual([]);
   });
 
@@ -73,7 +73,7 @@ describe('ParentTeacherAdapter', () => {
       { id: 't4', name: 'C', phone: '01012345677' },
     ]);
 
-    const res = await adapter.recommend({ lat: 37.5, lng: 127.0 });
+    const res = await adapter.recommendTeacherByLocation({ lat: 37.5, lng: 127.0 });
 
 
     // 후보로 잡힌 모든 id에 대해 알림 모드를 조회했는지 확인
@@ -89,9 +89,9 @@ describe('ParentTeacherAdapter', () => {
 
     // t1, t3, t4만 포함(가까움/지역/역반경)
     expect(res).toEqual([
-      { name: 'A', phone: '01012345678' },
-      { name: 'B', phone: '01012345679' },
-      { name: 'C', phone: '01012345677' },
+      { id: 't1', name: 'A', phone: '01012345678' },
+      { id: 't3', name: 'B', phone: '01012345679' },
+      { id: 't4', name: 'C', phone: '01012345677' },
     ]);
   });
 });

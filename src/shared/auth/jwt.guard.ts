@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './jwt.type';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -29,7 +30,7 @@ export class JwtAuthGuard implements CanActivate {
     if (!token) throw new UnauthorizedException('유효하지 않은 토큰입니다');
 
     try {
-      req.user = await this.jwt.verifyAsync(token);
+      req.user = await this.jwt.verifyAsync<{sub: JwtPayload}>(token);
 
       return true;
     } catch {

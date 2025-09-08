@@ -1,4 +1,5 @@
 import { TeacherAlertMode } from '@app/teacher/domain/enums/teacher-alert.type';
+import { TeacherDeviceTokenPlatform } from '@app/teacher/domain/enums/teacher-device-token.type';
 
 export type FindNearbyAddressCandidatesQuery = Readonly<{
   lat: number;
@@ -48,4 +49,11 @@ export type FindTeacherAlertSettingsQuery = Readonly<{ teacherIds: string[] }>;
 export type TeacherAlertSettingRecord = Readonly<{
   teacherId: string;
   mode: TeacherAlertMode;
+}>;
+
+export type FindTeacherDeviceTokensQuery = Readonly<{teacherIds: string[]}>;
+export type TeacherDeviceTokenRecord = Readonly<{
+  teacherId: string;
+  token: string;
+  platform: TeacherDeviceTokenPlatform
 }>;

@@ -3,6 +3,7 @@ import {
   FindRegionTeachersQuery,
   FindStationsWithinQuery,
   FindTeacherAlertSettingsQuery,
+  FindTeacherDeviceTokensQuery,
   FindTeachersByIdsQuery,
   FindTeachersByStationIdsQuery,
   NearByAddressPrefRecod,
@@ -10,6 +11,7 @@ import {
   StationWithinRecord,
   TeacherAlertSettingRecord,
   TeacherContactRecord,
+  TeacherDeviceTokenRecord,
   TeacherStationPrefRcord,
 } from './teacher-query.port.type';
 
@@ -35,4 +37,6 @@ export interface TeacherQueryPort {
   getAlertSettings(
     q: FindTeacherAlertSettingsQuery,
   ): Promise<TeacherAlertSettingRecord[]>;
+
+  getActiveDeviceTokens(q: FindTeacherDeviceTokensQuery): Promise<TeacherDeviceTokenRecord[]>;
 }
